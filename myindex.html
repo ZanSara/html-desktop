@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('clock').innerHTML = "              "+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+function invoke_test() {
+    var commands = { send_command: 'wmctrl -lp', send_and_read: 'date'};
+    window.external.invoke(JSON.stringify(commands));
+}
+</script>
+</head>
+
+<body onload="startTime()" style="background-color: transparent;">
+
+<div>
+    <h1 id="clock" style="color:green;"></h1>
+    <button onclick="document.getElementById('clock').style.color = (document.getElementById('clock').style.color == 'red') ? 'black' : 'red';">Toggle Color :o</button>
+    <button onclick="invoke_test();">SAY HELLO :)</button>
+    
+    <div class="slidecontainer">
+      <p> Brightness </p>
+      <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      <p><span id="brightness"></span>%<p>
+    </div>
+</div>
+
+
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("brightness");
+//output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = this.value;
+  
+  var commands = { send_command: 'xbacklight -set '+this.value};
+  window.external.invoke(JSON.stringify(commands));
+} 
+</script>
+</body>
