@@ -1179,3 +1179,4 @@ WEBVIEW_API void webview_print_log(const char *s) { printf("%s\n", s); }
 #endif
 
 #endif /* WEBVIEW_H */
+

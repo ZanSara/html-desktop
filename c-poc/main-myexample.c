@@ -32,7 +32,7 @@ int main() {
   webview_init(&webview);
   webview_set_color(&webview, 255, 255, 255, 0);
       
-  monitor_dbus_events("backlight");
+  //monitor_dbus_events("backlight");
     
   /* Main app loop, can be either blocking or non-blocking */
   while (webview_loop(&webview, 1) == 0);
@@ -132,7 +132,7 @@ void my_cb(struct webview *w, const char *arg) {
 /**
 * Run in the background
 */
-int monitor_dbus_events(const char* interface_name )
+void monitor_dbus_events(const char* interface_name )
 {
     // Create pipe
     int filedes[2];
