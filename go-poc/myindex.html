@@ -16,10 +16,20 @@ function checkTime(i) {
   if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
   return i;
 }
-function invoke_test() {
-    var commands = { send_command: 'wmctrl -lp', send_and_read: 'date'};
-    window.external.invoke(JSON.stringify(commands));
+
+function callnread(){
+  var call = document.getElementById('cmdInput').value;
+  document.getElementById('terminal-output').value = "> "+call+"\n";
+  controller.getByLine(call, "outputOnTerminal" );
+
 }
+
+
+// Callbacks
+function outputOnTerminal(output) {
+  document.getElementById('terminal-output').value += output + "\n";
+};
+
 </script>
 </head>
 
@@ -28,17 +38,20 @@ function invoke_test() {
 <div>
     <h1 id="clock" style="color:green;"></h1>
     <button onclick="document.getElementById('clock').style.color = (document.getElementById('clock').style.color == 'red') ? 'black' : 'red';">Toggle Color :o</button>
-    <button onclick="javascript:controller.sayHello();">SAY HELLO :)</button>
-    <button onclick="javascript:controller.execCommand('ls');">List dirs!</button>
-    <br>
-    <input type="text" id="cmdInput" placeholder="Type a command here..." style="color:white;background:black;"></input>
-    <button onclick="javascript:controller.execCommand(document.getElementById('cmdInput').value );">Execute</button>
 
     <div class="slidecontainer">
       <p> Brightness </p>
       <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
       <p><span id="brightness"></span>%<p>
     </div>
+
+    <button onclick="javascript:controller.sayHello();">SAY HELLO :)</button>
+    <br />
+    <input type="text" id="cmdInput" placeholder="Type a command here..." style="color:white;background:black;"></input>
+    <button onclick="javascript:callnread();">Execute</button>
+    <br />
+    <textarea id="terminal-output" style="color:white;background:black;" multiline></textarea>
+
 </div>
 
 
@@ -50,7 +63,7 @@ var output = document.getElementById("brightness");
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
   output.innerHTML = this.value;
-  controller.execCommand('xbacklight -set '+this.value);
+  controller.send('xbacklight -set '+this.value);
 }
 </script>
 </body>
